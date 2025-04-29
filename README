@@ -68,9 +68,9 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 (defun set-union (set-1 set-2)
 
   (COND
-    ((NULL? set-1) RETURN NULL)
-    ((NULL? set-2) RETURN NULL)
-    ((set-member (set-1 CAR set-2)))
+    ((NULL? set-1) set-2)
+    ((NULL? set-2) set-1)
+    ((set-member (set-1 CAR set-2)) )
   )
 )
 

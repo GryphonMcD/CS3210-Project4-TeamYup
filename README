@@ -46,8 +46,11 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
 (defun set-member (set item)
 
-  ;;Your implementation go here
-
+  (COND
+    ((NULL? set) #F)
+    ((EQ? item (CAR set)) #T)
+    ((ELSE (set item (CDR item))))
+  )
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -64,8 +67,11 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
 (defun set-union (set-1 set-2)
 
-  ;;Your implementation go here
-
+  (COND
+    ((NULL? set-1) RETURN NULL)
+    ((NULL? set-2) RETURN NULL)
+    ((set-member (set-1 CAR set-2)))
+  )
 )
 
  

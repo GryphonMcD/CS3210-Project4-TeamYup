@@ -32,13 +32,6 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
  
 
-(defun append (set-1 set-2)
-  (COND
-    ((NULL? set-1) set-2)
-    (ELSE (CONS (CAR set-1)
-      (append (CDR set-1) set-2)))
-))
-
 
 
 ;; Return T if item is a member of set.
@@ -54,12 +47,10 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;  (set-member '(1 2) 3) =>  NIL
 
 (defun set-member (set item)
-
   (COND
-    ((NULL? set) #F)
-    ((EQ? item (CAR set)) #T)
-    ((ELSE (set item (CDR item))))
-  )
+    ((EQUAL set NIL) NIL)
+    ((EQUAL item (CAR set)) T)  
+    (T (set-member (CDR item) item)))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -77,9 +68,10 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 (defun set-union (set-1 set-2)
 
   (COND
-    ((NULL? set-1) set-2)
-    ((NULL? set-2) set-1)
-    ((set-member (set-1 CAR set-2)) APPEND )
+    ((EQUAL set-1 NIL) set-2)
+    ((EQUAL set-2 NIL) set-1)
+    ((set-member set-1 (CAR set-2)) (set-union (CDR set-1) set-2) )
+    (t (cons (CAR set-1) (set-union (CDR set-1) set-2)))
   )
 )
 
@@ -99,13 +91,11 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
 (defun set-intersection (set-1 set-2)
   (cond
-    ((NULL? set-1) set-1)
-    ((NULL? set-2) set-2)
-    ((set-member set-1 CAR set-2) CONS (append ))
+    ((EQUAL set-1 NIL) NIL)
+    ((set-member set-2 (CAR set-1)) (CONS (CAR set-1) (set-intersection (CDR set-1) set-2)))
+    (T (set-intersection (CDR set-1) set-2))
   
   )
-  
-
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

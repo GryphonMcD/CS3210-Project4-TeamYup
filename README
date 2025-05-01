@@ -113,10 +113,12 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;   (set-diff '(1 2) '(2 4)) => '(1)
 
 (defun set-diff (set-1 set-2)
-
-  ;;Your implementation go here
-
-)
+  (COND
+    ((EQUAL set-1 NIL) NIL)                ; If set-1 is empty, return empty set
+    ((set-member set-2 (CAR set-1))      ; If first element of set-1 is in set-2
+     (set-diff (CDR set-1) set-2))         ; Skip it and check rest of set-1
+    (T (CONS (CAR set-1)                 ; Otherwise, include it in the result
+             (set-diff (CDR set-1) set-2))))) ; Otherwise, check rest of set-1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -188,7 +188,7 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
 (defun boolean-eval (exp)
 
-;;<Your implementation go here >
+
 
 )
 

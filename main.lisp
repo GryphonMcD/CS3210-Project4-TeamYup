@@ -37,4 +37,35 @@
 
 ; Boolean Expression
 
+;; Evaluate a boolean expression.
+
+;; Handle NOT, AND, OR, XOR, IMPLIES, and IFF.
+
+;;
+
+;; Examples:
+
+;;  (boolean-eval '(and t nil)) => nil
+
+;;  (boolean-eval '(and t (or nil t)) => t
+```
+(defun boolean-eval (exp)
+
+  (cond
+    ((OR (EQUAL exp T) (EQUAL exp NIL)) exp)
+
+    ((EQUAL (CAR exp) '(NOT)) NOT(boolean-eval(SECOND exp)))
+
+    ((EQUAL (CAR exp) '(AND)) (AND(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) '(OR)) (OR(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) '(XOR)) (boolean-xor(boolean-eval(SECOND exp)) (boolean-exp(THIRD exp))))
+
+    ((EQUAL (CAR exp) '(IMPLIES)) (boolean-implies(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) '(IIF)) (boolean-iff(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+  )
+)
+
 ; Merge Sort

@@ -173,7 +173,27 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;  (boolean-eval '(and t (or nil t)) => t
 ```
 (defun boolean-eval (exp)
+  (cond
+    ((OR (EQUAL exp t) (EQUAL exp nil)) exp)
 
+    ((EQUAL (CAR exp) 'not) 
+      (NOT(boolean-eval(SECOND exp))))
+
+    ((EQUAL (CAR exp) 'and) 
+      (AND(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'or) 
+      (OR(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'xor) 
+      (boolean-xor(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'implies) 
+      (boolean-implies(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'iif) 
+      (boolean-iff(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+  )
 )
 ```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -207,4 +227,3 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
         (merge-lists (merge-sort left-half predicate)
                      (merge-sort right-half predicate)
                      predicate))))
-```

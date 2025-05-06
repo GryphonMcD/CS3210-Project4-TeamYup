@@ -30,7 +30,6 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
     - any arithmetic operator or relation (+, -, *, /, <, <=, >, >=, =)
     - any numerical constant
 
- 
 
 ;; Return T if item is a member of set.
 
@@ -40,19 +39,16 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
 ;; Examples:
 
-;;  (set-member '(1 2) 1) => T
+;; (set-member '(1 2) 1) => T
 
-;;  (set-member '(1 2) 3) =>  NIL
-
+;; (set-member '(1 2) 3) =>  NIL
+```
 (defun set-member (set item)
-
-  (COND
-    ((NULL? set) #F)
-    ((EQ? item (CAR set)) #T)
-    ((ELSE (set item (CDR item))))
-  )
-)
-
+  (cond
+    ((equal set nil) nil)
+    ((equal (car set) item) t)
+    (t (set-member (cdr set) item))))
+```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Return the union of set-1 and set-2.
@@ -63,18 +59,15 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
 ;; Examples:
 
-;;   (set-union '(1 2) '(2 4)) => '(1 2 4)
+;; (set-union '(1 2) '(2 4)) => '(1 2 4)
 
+```
 (defun set-union (set-1 set-2)
-
-  (COND
-    ((NULL? set-1) set-2)
-    ((NULL? set-2) set-1)
-    ((set-member (set-1 CAR set-2)) )
-  )
-)
-
- 
+  (cond
+    ((equal set-2 nil) set-1) 
+    ((set-member set-1 (car set-2)) (set-union set-1 (cdr set-2))) 
+    (t (set-union (append set-1 (list (car set-2))) (cdr set-2)))))
+```
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -86,14 +79,15 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 
 ;; Examples:
 
-;;   (set-intersection '(1 2) '(2 4)) => '(2)
-
+;; (set-intersection '(1 2) '(2 4)) => '(2)
+```
 (defun set-intersection (set-1 set-2)
-
-  ;;Your implementation go here
-
-)
-
+  (cond 
+    ((equal set-1 nil) nil) 
+    ((set-member set-2 (car set-1)) 
+    (cons (car set-1) (set-intersection (cdr set-1) set-2))) 
+    (t (set-intersection (cdr set-1) set-2))))
+```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Return the difference of set-1 and set-2.
@@ -107,13 +101,15 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;; Examples:
 
 ;;   (set-diff '(1 2) '(2 4)) => '(1)
-
+```
 (defun set-diff (set-1 set-2)
-
-  ;;Your implementation go here
-
-)
-
+  (COND
+    ((EQUAL set-1 NIL) NIL)                ; If set-1 is empty, return empty set
+    ((set-member set-2 (CAR set-1))      ; If first element of set-1 is in set-2
+     (set-diff (CDR set-1) set-2))         ; Skip it and check rest of set-1
+    (T (CONS (CAR set-1)                 ; Otherwise, include it in the result
+             (set-diff (CDR set-1) set-2))))) ; Otherwise, check rest of set-1
+```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Return the exclusive or of a and b
@@ -125,13 +121,13 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;  (boolean-xor t nil) => t
 
 ;;  (boolean-xor nil nil) => nil
-
+```
 (defun boolean-xor (a b)
-
-  ;;Your implementation go here
-
-)
-
+  (cond
+    ((and a b) nil)
+    ((or a b) t)
+    (t nil)))
+```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Return the implication of a and b
@@ -143,13 +139,10 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;  (boolean-implies t nil) => nil
 
 ;;  (boolean-implies nil nil) => t
-
+```
 (defun boolean-implies (a b)
-
-;;<Your implementation go here >
-
-)
-
+  (or (not a) b))
+```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Return the bi-implication (if and only if) of a and b
@@ -161,13 +154,10 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;  (boolean-iff t nil) => nil
 
 ;;  (boolean-iff nil nil) => t
-
+```
 (defun boolean-iff (a b)
-
-;;<Your implementation go here >
-
-)
-
+  (and (boolean-implies a b) (boolean-implies b a)))
+```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Evaluate a boolean expression.
@@ -181,13 +171,11 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;  (boolean-eval '(and t nil)) => nil
 
 ;;  (boolean-eval '(and t (or nil t)) => t
-
+```
 (defun boolean-eval (exp)
 
-;;<Your implementation go here >
-
 )
-
+```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Perform merge sort on the lists.

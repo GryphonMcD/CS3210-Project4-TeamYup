@@ -59,4 +59,25 @@
   )
 )
 
-; Merge Sort
+(defun merge-sort (list predicate)
+  ;; Base case: empty list or single element is already sorted
+  (if (or (null list) (null (cdr list)))
+      list
+      ;; Recursive case: split, sort halves, and merge
+      (let* ((length (length list))
+             (middle (floor length 2))
+             (left-half (subseq list 0 middle))
+             (right-half (subseq list middle)))
+        ;; Recursively sort each half and merge them
+        (merge-lists (merge-sort left-half predicate)
+                     (merge-sort right-half predicate)
+                     predicate))))
+
+(defun merge-lists (list1 list2 predicate)
+  (cond ((null list1) list2)
+        ((null list2) list1)
+        ;; Compare the heads of both lists
+        ((funcall predicate (car list1) (car list2))
+         (cons (car list1) (merge-lists (cdr list1) list2 predicate)))
+        (t
+         (cons (car list2) (merge-lists list1 (cdr list2) predicate)))))

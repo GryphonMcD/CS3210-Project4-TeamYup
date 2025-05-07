@@ -70,8 +70,6 @@
   )
 )
 
-
-;; Merge sort function w/ helper function
 (defun merge-sort (list predicate)
   ;; Base case: empty list or single element is already sorted
   (if (or (null list) (null (cdr list)))

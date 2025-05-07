@@ -173,7 +173,27 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;  (boolean-eval '(and t (or nil t)) => t
 ```
 (defun boolean-eval (exp)
+  (cond
+    ((OR (EQUAL exp t) (EQUAL exp nil)) exp)
 
+    ((EQUAL (CAR exp) 'not) 
+      (NOT(boolean-eval(SECOND exp))))
+
+    ((EQUAL (CAR exp) 'and) 
+      (AND(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'or) 
+      (OR(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'xor) 
+      (boolean-xor(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'implies) 
+      (boolean-implies(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+
+    ((EQUAL (CAR exp) 'iif) 
+      (boolean-iff(boolean-eval(SECOND exp)) (boolean-eval(THIRD exp))))
+  )
 )
 ```
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -193,9 +213,17 @@ Note: Use only the following standard Lisp functions, macros, operators, and con
 ;;     (merge-sort '(2 1 5 0) #'<) => '(0 1 2 5)
 
 ;;     (merge-sort '(2 1 5 0) #'>) => '(5 2 1 0)
-
+````
 (defun merge-sort (list predicate)
-
-;;<Your implementation go here >
-
-)
+  ;; Base case: empty list or single element is already sorted
+  (if (or (null list) (null (cdr list)))
+      list
+      ;; Recursive case: split, sort halves, and merge
+      (let* ((length (length list))
+             (middle (floor length 2))
+             (left-half (subseq list 0 middle))
+             (right-half (subseq list middle)))
+        ;; Recursively sort each half and merge them
+        (merge-lists (merge-sort left-half predicate)
+                     (merge-sort right-half predicate)
+                     predicate))))
